@@ -23,3 +23,18 @@ e valor total;
 - Implementar paginação na listagem de oportunidades;
 - Apresentar mensagens amigáveis de sucesso ou erro nas operações
 realizadas.
+
+## Criação do banco MongoDB via WSL ubuntu (caso linux não necessário instalação do wsl)
+
+- Instalar o wsl e posteriormente a distribuição ubuntu:
+```powershell
+wsl --install
+wsl --install -d Ubuntu
+```
+- Após iss é necessário reiniciar o computador.
+- configurar o acesso linux
+- após a instalação necessário rodar a atualização do linux, instalação de algumas dependências para instalação da chave que verifica a oficialidade do docker:
+```bash
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg lsb-release
+```
