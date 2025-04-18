@@ -1,5 +1,5 @@
 const API_TOKEN = process.env.PIPEDRIVE_API_TOKEN;
-if(!API_TOKEN) throw new Error('API Token não encontrado no arquivo .env')
+if(!API_TOKEN) throw new Error('API Token Pipedrive não encontrado no arquivo .env')
 const pipeDriveUrl = `https://api.pipedrive.com/v1/deals?status=won&api_token=${API_TOKEN}`;
 
 
