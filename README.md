@@ -24,17 +24,14 @@ e valor total;
 - Apresentar mensagens amigáveis de sucesso ou erro nas operações
 realizadas.
 
-## Criação do banco MongoDB via WSL ubuntu (caso linux não necessário instalação do wsl)
+## Criação do banco MongoDB via docker
 
-- Instalar o wsl e posteriormente a distribuição ubuntu:
-```powershell
-wsl --install
-wsl --install -d Ubuntu
-```
-- Após iss é necessário reiniciar o computador.
-- configurar o acesso linux
-- após a instalação necessário rodar a atualização do linux, instalação de algumas dependências para instalação da chave que verifica a oficialidade do docker:
+- Entrar no site oficial do docker e intalar ele para sua respectiva arquitetura.
+- Após configurar o docker é necessário instalar a imagem do mongoBD.
 ```bash
-sudo apt update
-sudo apt install -y ca-certificates curl gnupg lsb-release
+docker pull mongo
+```
+- Ao termino da intalação é necessário configurar o acesso.
+```bash
+docker run -d --name mongodb -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=[nome_usuario] -e MONGO_INITDB_ROOT_PASSWORD=[senha] mongo
 ```
