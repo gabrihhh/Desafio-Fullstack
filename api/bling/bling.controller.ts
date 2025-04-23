@@ -1,4 +1,4 @@
-import { PedidoBlingResponse } from '../../interfaces/pedidoBling.interface'
+import { PedidoBlingResponse } from '../../interfaces/pedidobling.interface'
 
 const API_TOKEN = process.env.BLING_API_TOKEN;
 if(!API_TOKEN) throw new Error('API Token Bling não encontrado no arquivo .env')
@@ -55,12 +55,17 @@ export async function inserirPedido(
             };
         }
 
+        const pedidoBling = data.retorno?.pedidos?.[0]?.pedido;
+
         return {
             success: true,
             status: response.status,
             message: 'Pedido criado com sucesso!',
-            data,
+            numeroPedido: pedidoBling?.numero,
+            situacao: pedidoBling?.situacao,
+            data: pedidoBling,
         };
+
         } catch (error: any) {
         return {
             success: false,

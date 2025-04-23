@@ -5,4 +5,6 @@ export interface PedidoBlingResponse {
     data?: any;
     error?: string;
     details?: any;
+    numeroPedido?:number;
+    situacao?:string
 }

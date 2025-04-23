@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { Deal } from '../database/models/deals.model';
 import { buscarNegociosGanhos } from '../api/pipedrive/pipedrive.controller';
+import { inserirPedido } from '../api/bling/bling.controller';
 
 const router = Router();
 
@@ -20,6 +21,30 @@ router.get('/refresh', async (req, res) => {
             if (!existingDeal) {
                 await Deal.insertMany([negocio]);
                 dealsAtualizados.push(negocio);
+
+                try {
+                    const pedidoResult = await inserirPedido(
+                        negocio.person_id?.name ?? 'Cliente não identificado',
+                        `PD-${negocio.id}`,
+                        negocio.title,
+                        1,
+                        negocio.value
+                    );
+
+                    if (pedidoResult.success) {
+                        console.log(`Pedido criado com sucesso no Bling.`);
+                        console.log(`Número do pedido: ${pedidoResult.numeroPedido}`);
+                        console.log(`Situação do pedido: ${pedidoResult.situacao}`);
+                        console.log(`Resposta completa do Bling:`, pedidoResult.data);
+                    } else {
+                        console.error(`Erro ao criar pedido:`, pedidoResult.error);
+                        if (pedidoResult.data) console.error('Detalhes do erro:', pedidoResult.data);
+                    }
+                    
+                } catch (error) {
+                    console.error(`Erro ao enviar pedido para Bling (negócio ${negocio.id}):`, error);
+                }
+
             } else {
                 const existingWonTime = existingDeal.won_time;
                 const newWonTime = negocio.won_time;
