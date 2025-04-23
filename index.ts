@@ -4,12 +4,15 @@ import pipedriveRoutes from './routes/pipedrive.routes';
 import blingRoutes from './routes/bling.routes';
 import frontendRoutes from './routes/frontend.routes';
 import connectDB from './database/database';
+import cors from 'cors';
+
 
 const app = express();
 
 connectDB()
 
 app.use(express.json());
+app.use(cors());
 
 //=======================ROTAS========================
 

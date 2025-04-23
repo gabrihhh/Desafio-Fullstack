@@ -12,15 +12,40 @@ router.get('/refresh', async (req, res) => {
             return res.status(negocios.http_status).json(negocios);
         }
 
-        const insertedDeals = await Deal.insertMany(negocios);
+        const dealsAtualizados = [];
+
+        for (const negocio of negocios) {
+            const existingDeal = await Deal.findOne({ id: negocio.id });
+
+            if (!existingDeal) {
+                await Deal.insertMany([negocio]);
+                dealsAtualizados.push(negocio);
+            } else {
+                const existingWonTime = existingDeal.won_time;
+                const newWonTime = negocio.won_time;
+
+                if (existingWonTime !== newWonTime) {
+                    await Deal.updateOne({ id: negocio.id }, { $set: negocio });
+                    dealsAtualizados.push(negocio);
+                } else {
+                    console.log(`Negócio id ${negocio.id} já existe e data de ganho é igual.`);
+                }
+            }
+        }
 
         res.status(201).json({
             message: 'Deals atualizados com sucesso!',
-            deals: insertedDeals,
+            data: dealsAtualizados
         });
-    } catch (err: any) {
+
+    } catch (err:any) {
+        console.error('Erro ao atualizar deals:', err);
         res.status(500).json({ message: 'Erro ao atualizar deals', error: err.message });
     }
 });
+
+
+
+
 
 export default router;
